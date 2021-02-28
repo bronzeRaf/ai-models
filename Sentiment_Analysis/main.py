@@ -157,7 +157,9 @@ train_texts, train_labels = zip(*((sample['text'], sample['sentiment']) for samp
 val_texts, val_labels = zip(*((sample['text'], sample['sentiment']) for sample in val_data))
 test_texts, test_labels = zip(*((sample['text'], sample['sentiment']) for sample in test_data))
 
-stopwords = 0 #TODO
+stopwords = np.loadtxt('stopdata.txt', delimiter='\n')
+print(stopwords)
+ #TODO
 
 clean_dictionary = p1.purse_of_words(train_texts, stopwords)
 
