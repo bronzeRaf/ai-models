@@ -4,7 +4,6 @@ import random
 
 # Part I
 
-
 def get_order(n_samples) -> object:
     try:
         with open(str(n_samples) + '.txt') as fp:
@@ -150,9 +149,6 @@ def average_perceptron(feature_matrix, labels, T):
     iterations through the feature matrix and the second element is a real
     number with the value of the average theta_0, the offset classification
     parameter, found after T iterations through the feature matrix.
-
-    Hint: It is difficult to keep a running average; however, it is simple to
-    find a sum and divide.
     """
     n = feature_matrix.shape[1]
     theta = np.zeros(n)
@@ -213,9 +209,6 @@ def pegasos(feature_matrix, labels, T, L):
     where t is a counter for the number of updates performed so far (between 1
     and nT inclusive).
 
-    NOTE: Please use the previously implemented functions when applicable.
-    Do not copy paste code from previous parts.
-
     Args:
         feature_matrix - A numpy matrix describing the given data. Each row
             represents a single data point.
@@ -269,7 +262,7 @@ def classify(feature_matrix, theta, theta_0):
         label = np.dot(feature_matrix[i], theta) + theta_0
         if label > 0:
             labels[i] = 1
-        else: #elif label > 0:
+        else:
             labels[i] = -1
     return labels
 
@@ -364,9 +357,8 @@ def extract_bow_feature_vectors(reviews, dictionary):
     Inputs the dictionary of words as given by bag_of_words
     Returns the bag-of-words feature matrix representation of the data.
     The returned matrix is of shape (n, m), where n is the number of reviews
-    and m the total number of entries in the dictionary.
-
-    Feel free to change this code as guided by Problem 9
+    and m the total number of entries in the dictionary. The result is binary
+    entries on whether the word is evident in the given review.
     """
     num_reviews = len(reviews)
     feature_matrix = np.zeros([num_reviews, len(dictionary)])
@@ -376,6 +368,26 @@ def extract_bow_feature_vectors(reviews, dictionary):
         for word in word_list:
             if word in dictionary:
                 feature_matrix[i, dictionary[word]] = 1
+    return feature_matrix
+
+
+def extract_count_feature_vectors(reviews, dictionary):
+    """
+    Inputs a list of string reviews
+    Inputs the dictionary of words as given by bag_of_words
+    Returns the bag-of-words feature matrix representation of the data.
+    The returned matrix is of shape (n, m), where n is the number of reviews
+    and m the total number of entries in the dictionary. The result is
+    the count of each word in the given review.
+    """
+    num_reviews = len(reviews)
+    feature_matrix = np.zeros([num_reviews, len(dictionary)])
+
+    for i, text in enumerate(reviews):
+        word_list = extract_words(text)
+        for word in word_list:
+            if word in dictionary:
+                feature_matrix[i, dictionary[word]] += 1
     return feature_matrix
 
 

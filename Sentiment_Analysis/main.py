@@ -157,12 +157,29 @@ train_texts, train_labels = zip(*((sample['text'], sample['sentiment']) for samp
 val_texts, val_labels = zip(*((sample['text'], sample['sentiment']) for sample in val_data))
 test_texts, test_labels = zip(*((sample['text'], sample['sentiment']) for sample in test_data))
 
-stopwords = np.loadtxt('stopdata.txt', delimiter='\n')
-print(stopwords)
- #TODO
+stopwords = np.genfromtxt('stopwords.txt', dtype='str')
 
 clean_dictionary = p1.purse_of_words(train_texts, stopwords)
 
-train_bow_features = p1.extract_bow_feature_vectors(train_texts, dictionary)
-val_bow_features = p1.extract_bow_feature_vectors(val_texts, dictionary)
-test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
+clean_train_bow_features = p1.extract_count_feature_vectors(train_texts, clean_dictionary)
+clean_val_bow_features = p1.extract_count_feature_vectors(val_texts, clean_dictionary)
+clean_test_bow_features = p1.extract_count_feature_vectors(test_texts, clean_dictionary)
+
+
+T = 25
+L = 0.01
+
+pct_train_accuracy, pct_test_accuracy = \
+   p1.classifier_accuracy(p1.perceptron, clean_train_bow_features,clean_test_bow_features,train_labels,test_labels,T=T)
+print("{:35} {:.4f}".format("Training accuracy for perceptron:", pct_train_accuracy))
+print("{:35} {:.4f}".format("Test accuracy for perceptron:", pct_test_accuracy))
+
+avg_pct_train_accuracy, avg_pct_test_accuracy = \
+   p1.classifier_accuracy(p1.average_perceptron, clean_train_bow_features,clean_test_bow_features,train_labels,test_labels,T=T)
+print("{:43} {:.4f}".format("Training accuracy for average perceptron:", avg_pct_train_accuracy))
+print("{:43} {:.4f}".format("Test accuracy for average perceptron:", avg_pct_test_accuracy))
+
+avg_peg_train_accuracy, avg_peg_test_accuracy = \
+   p1.classifier_accuracy(p1.pegasos, clean_train_bow_features,clean_test_bow_features,train_labels,test_labels,T=T,L=L)
+print("{:50} {:.4f}".format("Training accuracy for Pegasos:", avg_peg_train_accuracy))
+print("{:50} {:.4f}".format("Test accuracy for Pegasos:", avg_peg_test_accuracy))
