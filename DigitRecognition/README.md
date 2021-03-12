@@ -5,6 +5,12 @@ The MNIST database contains binary images of handwritten digits commonly used to
 
 ## Translating photos to digits
 
+These set contains the following models for classifying the photos:
+- Linear regression
+- SVM classifier 
+- Logistic regression (Softmax regression)
+
+---
 ---
 
 ## Executing
