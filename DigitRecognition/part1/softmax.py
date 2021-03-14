@@ -31,12 +31,20 @@ def compute_probabilities(X, theta, temp_parameter):
     Returns:
         H - (k, n) NumPy array, where each entry H[j][i] is the probability that X[i] is labeled as j
     """
-    # c = 1 #max(theta*X)/temp_parameter
-    # exponentials = np.multiply(theta,X/temp_parameter) - c
-    # s = np.sum(np.exp(exponentials))
-    # H = np.exp(exponentials)/s
-    # return H
-    pass
+    # initialize
+    exponentials = np.zeros((theta.shape[0], X.shape[0]))
+    # iterate in data point i
+    for i in range(0,X.shape[0]):
+        sum = 0
+        c = np.matmul(np.amax(theta, axis = 0), X[i]/temp_parameter)
+        # iterate in theta j
+        for j in range(0, theta.shape[0]):
+            exponentials[j][i] = np.matmul(theta[j], X[i]/temp_parameter) - c
+            sum += np.sum(np.exp(exponentials[j][i]))
+    # calculate probabilities
+    H = np.exp(exponentials)/sum
+    return H
+
 
 def compute_cost_function(X, Y, theta, lambda_factor, temp_parameter):
     """
@@ -54,8 +62,27 @@ def compute_cost_function(X, Y, theta, lambda_factor, temp_parameter):
     Returns
         c - the cost value (scalar)
     """
-    #YOUR CODE HERE
-    raise NotImplementedError
+    # initialize
+    exponentials = np.zeros((theta.shape[0], X.shape[0]))
+    thetas = (lambda_factor/2) *np.sum(np.square(theta))
+    n = X.shape[0]
+    # iterate in data point i
+    for i in range(0, X.shape[0]):
+        sum = 0
+        # find sum
+        for jj in range(0, theta.shape[0]):
+            sum += np.sum(np.exp(exponentials[jj][i]))
+        # iterate in theta j
+        for j in range(0, theta.shape[0]):
+            if Y[i] == j:
+                exponentials[j][i] = np.matmul(theta[j], X[i] / temp_parameter)
+                exponentials[j][i] = np.log(np.exp(exponentials[j][i])/sum)
+            else:
+                exponentials[j][i] = 0
+
+    c = -(np.sum(exponentials) + thetas)/n
+    return c
+
 
 def run_gradient_descent_iteration(X, Y, theta, alpha, lambda_factor, temp_parameter):
     """
