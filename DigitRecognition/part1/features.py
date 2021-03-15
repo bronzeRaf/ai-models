@@ -8,23 +8,8 @@ def project_onto_PC(X, pcs, n_components, feature_means):
     this function returns a new data array in which each sample in X
     has been projected onto the first n_components principcal components.
     """
-    # TODO: first center data using the feature_means
-    # TODO: Return the projection of the centered dataset
-    #       on the first n_components principal components.
-    #       This should be an array with dimensions: n x n_components.
-    # Hint: these principal components = first n_components columns
-    #       of the eigenvectors returned by principal_components().
-    #       Note that each eigenvector is already be a unit-vector,
-    #       so the projection may be done using matrix multiplication.
-    u = X - feature_means
-    v = np.transpose(pcs[:n_components,:])
-    v_norm = np.sqrt(sum(v ** 2))
-    proj_of_u_on_v = (np.dot(u, v) / v_norm ** 2) #* v
-    return proj_of_u_on_v
-    # Xbar = X-feature_means
-    # return np.matmul(Xbar, np.transpose(pcs[:,:n_components]))
-
-
+    Xbar = X - feature_means
+    return np.matmul(Xbar, pcs[:, :n_components])
 
 
 ### Functions which are already complete, for you to use ###

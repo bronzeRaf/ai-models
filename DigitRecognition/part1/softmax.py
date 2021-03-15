@@ -32,17 +32,13 @@ def compute_probabilities(X, theta, temp_parameter):
         H - (k, n) NumPy array, where each entry H[j][i] is the probability that X[i] is labeled as j
     """
     # initialize
+    H = np.zeros((theta.shape[0], X.shape[0]))
     exponentials = np.zeros((theta.shape[0], X.shape[0]))
-    # iterate in data point i
-    for i in range(0,X.shape[0]):
-        sum = 0
-        c = np.matmul(np.amax(theta, axis = 0), X[i]/temp_parameter)
-        # iterate in theta j
-        for j in range(0, theta.shape[0]):
-            exponentials[j][i] = np.matmul(theta[j], X[i]/temp_parameter) - c
-            sum += np.sum(np.exp(exponentials[j][i]))
-    # calculate probabilities
-    H = np.exp(exponentials)/sum
+
+    c = np.matmul(np.amax(theta, axis = 0), np.transpose(X[:][:]/temp_parameter))
+    exponentials = np.matmul(theta, np.transpose(X / temp_parameter)) - c
+    sum = np.sum(np.exp(exponentials), axis=0)
+    H = np.exp(exponentials) / sum
     return H
 
 
@@ -66,21 +62,29 @@ def compute_cost_function(X, Y, theta, lambda_factor, temp_parameter):
     exponentials = np.zeros((theta.shape[0], X.shape[0]))
     thetas = (lambda_factor/2) *np.sum(np.square(theta))
     n = X.shape[0]
+
+    # probabilities = compute_probabilities(X, theta, temp_parameter)
+    # sum = np.sum(probabilities, axis=0)
+    # c = -np.sum(np.log(probabilities/sum)[Y[:]])/n + thetas
+    # return c
+
     # iterate in data point i
     for i in range(0, X.shape[0]):
         sum = 0
-        # find sum
-        for jj in range(0, theta.shape[0]):
-            sum += np.sum(np.exp(exponentials[jj][i]))
         # iterate in theta j
         for j in range(0, theta.shape[0]):
+            exponentials[j][i] = np.matmul(theta[j], np.transpose(X[i] / temp_parameter))
+            sum += (np.exp(exponentials[j][i]))
+
+        for j in range(0, theta.shape[0]):
             if Y[i] == j:
-                exponentials[j][i] = np.matmul(theta[j], X[i] / temp_parameter)
                 exponentials[j][i] = np.log(np.exp(exponentials[j][i])/sum)
+                if exponentials[j][i] == np.nan:
+                    print(sum)
+                exponentials[j][i] = np.nan_to_num(exponentials[j][i])
             else:
                 exponentials[j][i] = 0
-
-    c = -(np.sum(exponentials) + thetas)/n
+    c = -(np.sum(exponentials))/n + thetas
     return c
 
 
@@ -101,8 +105,15 @@ def run_gradient_descent_iteration(X, Y, theta, alpha, lambda_factor, temp_param
     Returns:
         theta - (k, d) NumPy array that is the final value of parameters theta
     """
-    #YOUR CODE HERE
-    raise NotImplementedError
+    itemp = 1. / temp_parameter
+    num_examples = X.shape[0]
+    num_labels = theta.shape[0]
+    probabilities = compute_probabilities(X, theta, temp_parameter)
+    # M[i][j] = 1 if y^(j) = i and 0 otherwise.
+    M = sparse.coo_matrix(([1] * num_examples, (Y, range(num_examples))), shape=(num_labels, num_examples)).toarray()
+    non_regularized_gradient = np.dot(M - probabilities, X)
+    non_regularized_gradient *= -itemp / num_examples
+    return theta - alpha * (non_regularized_gradient + lambda_factor * theta)
 
 def update_y(train_y, test_y):
     """
@@ -121,8 +132,9 @@ def update_y(train_y, test_y):
         test_y_mod3 - (n, ) NumPy array containing the new labels (a number between 0-2)
                     for each datapoint in the test set
     """
-    #YOUR CODE HERE
-    raise NotImplementedError
+    train_y_mod3 = train_y % 3
+    test_y_mod3 = test_y % 3
+    return train_y_mod3, test_y_mod3
 
 def compute_test_error_mod3(X, Y, theta, temp_parameter):
     """
@@ -139,8 +151,8 @@ def compute_test_error_mod3(X, Y, theta, temp_parameter):
     Returns:
         test_error - the error rate of the classifier (scalar)
     """
-    #YOUR CODE HERE
-    raise NotImplementedError
+    Ybar = get_classification(X, theta, temp_parameter)%3
+    return 1 - np.mean(Ybar == Y)
 
 def softmax_regression(X, Y, temp_parameter, alpha, lambda_factor, k, num_iterations):
     """
