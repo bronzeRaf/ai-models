@@ -8,8 +8,8 @@ def project_onto_PC(X, pcs, n_components, feature_means):
     this function returns a new data array in which each sample in X
     has been projected onto the first n_components principcal components.
     """
-    Xbar = X - feature_means
-    return np.matmul(Xbar, pcs[:, :n_components])
+    centered_data = X - feature_means
+    return np.dot(centered_data, pcs[:, range(n_components)])
 
 
 ### Functions which are already complete, for you to use ###

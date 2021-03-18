@@ -19,7 +19,9 @@ def polynomial_kernel(X, Y, c, p):
         Returns:
             kernel_matrix - (n, m) Numpy array containing the kernel matrix
     """
-    K = (np.dot(X, Y.T)+c)**p
+    K = X @ Y.transpose()
+    K += c
+    K **= p
     return K
 
 
