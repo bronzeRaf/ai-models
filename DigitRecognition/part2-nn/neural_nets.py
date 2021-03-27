@@ -3,7 +3,7 @@ import math
 
 """
  ==================================
- Problem 3: Neural Network Basics
+ Neural Network Basics
  ==================================
     Generates a neural network with the following architecture:
         Fully connected neural network.
@@ -15,11 +15,15 @@ import math
 
 def rectified_linear_unit(x):
     """ Returns the ReLU of x, or the maximum between 0 and x."""
-    # TODO
+    return np.maximum(0,x)
 
 def rectified_linear_unit_derivative(x):
     """ Returns the derivative of ReLU."""
-    # TODO
+    if x <= 0:
+        y = 0
+    else:
+        y=1
+    return y
 
 def output_layer_activation(x):
     """ Linear function, returns input as is. """
@@ -39,8 +43,7 @@ class NeuralNetwork():
     """
 
     def __init__(self):
-
-        # DO NOT CHANGE PARAMETERS (Initialized to floats instead of ints)
+        # Constant Parameters (Initialized weights to floats)
         self.input_to_hidden_weights = np.matrix('1. 1.; 1. 1.; 1. 1.')
         self.hidden_to_output_weights = np.matrix('1. 1. 1.')
         self.biases = np.matrix('0.; 0.; 0.')
@@ -54,12 +57,18 @@ class NeuralNetwork():
         ### Forward propagation ###
         input_values = np.matrix([[x1],[x2]]) # 2 by 1
 
-        # Calculate the input and activation of the hidden layer
-        hidden_layer_weighted_input = # TODO (3 by 1 matrix)
-        hidden_layer_activation = # TODO (3 by 1 matrix)
+        # Vectorized functions
+        vector_rectified_linear_unit = np.vectorize(rectified_linear_unit)
+        vector_rectified_linear_unit_derivative = np.vectorize(rectified_linear_unit_derivative)
+        vector_output_layer_activation = np.vectorize(output_layer_activation)
+        vector_output_layer_activation_derivative = np.vectorize(output_layer_activation_derivative)
 
-        output =  # TODO
-        activated_output = # TODO
+        # Calculate the input and activation of the hidden layer
+        hidden_layer_weighted_input = np.matmul(self.input_to_hidden_weights, input_values) #(3 by 1 matrix)
+        hidden_layer_activation = vector_rectified_linear_unit(hidden_layer_weighted_input) #(3 by 1 matrix)
+
+        output =  np.matmul(self.hidden_to_output_weights, hidden_layer_activation) + self.biases
+        activated_output = vector_output_layer_activation(output)
 
         ### Backpropagation ###
 

@@ -3,7 +3,11 @@
 ## The Data
 The MNIST database contains binary images of handwritten digits commonly used to train image processing systems. The digits were collected from among Census Bureau employees and high school students. The database contains 60,000 training digits and 10,000 testing digits, all of which have been size-normalized and centered in a fixed-size image of 28 × 28 pixels. Many methods have been tested with this dataset and in this project, you will get a chance to experiment with the task of classifying these images into the correct digit using some of the methods you have learned so far.
 
-## Translating photos to digits
+## PART1
+
+This project contains several approaches for image classification, using the data described above. It is based on Regression, SVM and Softmax - Gradient Decent for building the classifier models. More details on the approaches in the subsection below. 
+
+### Translating photos to digits
 
 This set contains the following approaches for classifying the photos:
 - Linear regression
@@ -21,7 +25,7 @@ This set contains the following approaches for classifying the photos:
 - Kernel mapping
   - This approach is used to avoid an explicit feature mapping. Instead of real mapping, the inner product between two features after mapping is calculated, using either a Polynomial or a Gaussian RBF Kernel. This method is quite more efficient that the previous one. The new dataset could be used for any of the above models.
 
-## Executing
+### Executing
 You can train the models, make predictions on training, validation and test set and calculate the accuracy of the classifier using the proper snippet from the main.py file. Inside main.py you will find comment instructions and code for:
 - Loading data and the training/test set.
 - Calculating the theta and theta_0 values of the above described models.
@@ -29,15 +33,20 @@ You can train the models, make predictions on training, validation and test set 
 - Plotting and printing results, in order to evaluate the models.
 - Preprocessing the data using the above described approaches.
 
-You can run the functionalities using the proper snippet of the main.py script. Comment out not needed parts and uncomment needed. Then simply run:
+You can run the functionalities using the proper snippet of the part1/main.py script. Comment out not needed parts and uncomment needed. Then simply run:
 
 ```bash
 python3 main.py
 ```
 
-## Testing
-You can test your modifications using the test.py tester script. Simply run:
+### Testing
+You can test your modifications using the part1/test.py tester script. Simply run:
 
 ```bash
 python3 test.py
 ```
+
+
+## PART2
+
+This project contains a Neural Network approach for image classification, using the data described above.
