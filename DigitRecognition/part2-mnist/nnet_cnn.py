@@ -41,12 +41,22 @@ def main():
     test_batches = batchify_data(X_test, y_test, batch_size)
 
     #################################
-    ## Model specification TODO
+    ## Model specification
     model = nn.Sequential(
               nn.Conv2d(1, 32, (3, 3)),
               nn.ReLU(),
               nn.MaxPool2d((2, 2)),
+              nn.Conv2d(1, 64, (3, 3)),
+              nn.ReLU(),
+              nn.MaxPool2d((2, 2)),
+              nn.Flatten(),
+              torch.nn.Linear(2, 128),
+              nn.Dropout(p=0.5),
+              torch.nn.Linear(128, 10)
             )
+    # for layer in model:
+    #     x = layer(X_train)
+    #     print(x.size())
     ##################################
 
     train_model(train_batches, dev_batches, model, nesterov=True)

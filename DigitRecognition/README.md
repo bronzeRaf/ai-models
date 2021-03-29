@@ -49,4 +49,9 @@ python3 test.py
 
 ## PART2
 
-This project contains a Neural Network approach for image classification, using the data described above.
+This project contains a set of Neural Network approaches for image classification, using the data described above. More detailed:
+- A custom implemented Neural Network.
+  - Input Layer (Dim 2) - Hidden Layer (Dim 3) with RELU activation and Bias - Output Layer (Dim 1). This is a toy example of a NN using toy data for training and testing purposes.
+- A Neural Network implemented using the PyTorch library.
+  - Input Layer (Dim 784) - Hidden Layer (Dim 128) with RELU activation and Bias - Output Layer (Dim 10). This NN is able to train and to predict in the MNIST dataset (Training accuracy = 0.991 | Testing accuracy = 0.977)
+- A Convolutional Neural Network implemented using the PyTorch library.
