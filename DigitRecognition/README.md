@@ -53,5 +53,8 @@ This project contains a set of Neural Network approaches for image classificatio
 - A custom implemented Neural Network.
   - Input Layer (Dim 2) - Hidden Layer (Dim 3) with RELU activation and Bias - Output Layer (Dim 1). This is a toy example of a NN using toy data for training and testing purposes.
 - A Neural Network implemented using the PyTorch library.
-  - Input Layer (Dim 784) - Hidden Layer (Dim 128) with RELU activation and Bias - Output Layer (Dim 10). This NN is able to train and to predict in the MNIST dataset (Training accuracy = 0.991 | Testing accuracy = 0.977)
+  - Input Layer (Dim 784) - Hidden Layer (Dim 128) with RELU activation and Bias - Output Layer (Dim 10).
+  - This NN is able to train and to predict in the MNIST dataset (Training accuracy = 0.991 | Testing accuracy = 0.977)
 - A Convolutional Neural Network implemented using the PyTorch library.
+  - Conv of 32 filters 3x3 - ReLU - MaxPooling - Conv of 64 filters 3x3 - ReLU - MaxPooling - Flatten - Linear with 128 neurons - Dropout - Linear with 10 neurons.
+  - This NN is able to train and to predict in the MNIST dataset giving the probabilities of ten digits (0-9) for each input image (Training accuracy = 0.994091 | Testing accuracy = 0.9920873397435898)

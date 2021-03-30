@@ -46,17 +46,14 @@ def main():
               nn.Conv2d(1, 32, (3, 3)),
               nn.ReLU(),
               nn.MaxPool2d((2, 2)),
-              nn.Conv2d(1, 64, (3, 3)),
+              nn.Conv2d(32, 64, (3, 3)),
               nn.ReLU(),
               nn.MaxPool2d((2, 2)),
               nn.Flatten(),
-              torch.nn.Linear(2, 128),
+              nn.Linear(1600, 128),
               nn.Dropout(p=0.5),
-              torch.nn.Linear(128, 10)
+              nn.Linear(128, 10)
             )
-    # for layer in model:
-    #     x = layer(X_train)
-    #     print(x.size())
     ##################################
 
     train_model(train_batches, dev_batches, model, nesterov=True)
@@ -68,7 +65,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # Specify seed for deterministic behavior, then shuffle. Do not change seed for official submissions to edx
+    # Specify seed for deterministic behavior, then shuffle
     np.random.seed(12321)  # for reproducibility
     torch.manual_seed(12321)
     main()
