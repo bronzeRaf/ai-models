@@ -18,17 +18,18 @@ class MLP(nn.Module):
     def __init__(self, input_dimension):
         super(MLP, self).__init__()
         self.flatten = Flatten()
-        self.fc1 = nn.Linear(1176, 64)
-        self.fc2 = nn.Linear(64, 20)
-        # TODO initialize model layers here
+        self.hidden = nn.Linear(input_dimension, 64)
+        self.output1 = nn.Linear(64, 10)
+        self.output2 = nn.Linear(64, 10)
 
     def forward(self, x):
-        xf1 = self.flatten(x)
-        xf2 = self.fc1(xf1)
-        xf3 = self.fc2(xf2)
-        out_first_digit = F.log_softmax(xf3[:][:9], dim=1)
-        out_second_digit = F.log_softmax(xf3[:][10:], dim=1)
-        # TODO use model layers to predict the two digits
+        # Flatten layer
+        x = self.flatten(x)
+        # Hidden layer
+        x = self.hidden(x)
+        # Output layers (one for each digit recognition)
+        out_first_digit = self.output1(x)
+        out_second_digit = self.output2(x)
 
         return out_first_digit, out_second_digit
 
@@ -54,7 +55,7 @@ def main():
 
     # Load model
     input_dimension = img_rows * img_cols
-    model = MLP(input_dimension) # TODO add proper layers to MLP class above
+    model = MLP(input_dimension)
 
     # Train
     train_model(train_batches, dev_batches, model)
