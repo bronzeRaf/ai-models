@@ -17,7 +17,18 @@ def estep(X: np.ndarray, mixture: GaussianMixture) -> Tuple[np.ndarray, float]:
             for all components for all examples
         float: log-likelihood of the assignment
     """
-    raise NotImplementedError
+    n, d = X.shape
+    K, _ = mixture.mu.shape
+    post = np.zeros((n, K))
+
+    likelihood = np.zeros((n,1))
+    for i in range(n):
+        for j in range(K):
+            normal = (1 / (2 * np.pi * mixture.var[j]) ** (d / 2)) * np.exp(-((np.linalg.norm(X[i] - mixture.mu[j], axis=1) * 2) / (mixture.var[j] * 2)))
+            post[i][j] = mixture.p[j]*normal
+            likelihood[i] += post[i][j]
+
+    return post/likelihood, np.sum(likelihood)
 
 
 def mstep(X: np.ndarray, post: np.ndarray) -> GaussianMixture:
@@ -32,7 +43,7 @@ def mstep(X: np.ndarray, post: np.ndarray) -> GaussianMixture:
     Returns:
         GaussianMixture: the new gaussian mixture
     """
-    raise NotImplementedError
+
 
 
 def run(X: np.ndarray, mixture: GaussianMixture,
