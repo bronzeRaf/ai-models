@@ -9,4 +9,4 @@ K = 4
 n, d = X.shape
 seed = 0
 
-# TODO: Your code here
+# TODO: unit test
