@@ -34,8 +34,17 @@ def epsilon_greedy(state_1, state_2, q_func, epsilon):
     Returns:
         (int, int): the indices describing the action/object to take
     """
-    # TODO Your code here
-    action_index, object_index = None, None
+    # Select random exploration
+    if epsilon > 1-epsilon:
+        action_index = np.random.random_integers(0, NUM_ACTIONS-1)
+        object_index = np.random.random_integers(0, NUM_OBJECTS-1)
+    # Select best action
+    else:
+        index = np.argmax(q_func[state_1, state_2, :, :])
+        indices = np.unravel_index(index, np.shape(q_func))
+        action_index = indices[2]
+        object_index = indices[3]
+
     return (action_index, object_index)
 
 
@@ -60,11 +69,16 @@ def tabular_q_learning(q_func, current_state_1, current_state_2, action_index,
     Returns:
         None
     """
-    # TODO Your code here
-    q_func[current_state_1, current_state_2, action_index,
-           object_index] = 0  # TODO Your update here
+    if terminal == True:
+        maxq = 0
+    else:
+        maxq = np.amax(q_func[next_state_1, next_state_2, :, :])
 
-    return None  # This function shouldn't return anything
+    update_term = ALPHA*(reward + GAMMA*maxq)
+    history_term = (1 - ALPHA) * q_func[current_state_1, current_state_2, action_index, object_index]
+    q_func[current_state_1, current_state_2, action_index, object_index] = history_term + update_term
+
+    return None
 
 
 # pragma: coderesponse end
@@ -86,26 +100,26 @@ def run_episode(for_training):
 
     epi_reward = None
     # initialize for each episode
-    # TODO Your code here
+    # TODO  code here
 
     (current_room_desc, current_quest_desc, terminal) = framework.newGame()
 
     while not terminal:
         # Choose next action and execute
-        # TODO Your code here
+        # TODO  code here
 
         if for_training:
             # update Q-function.
-            # TODO Your code here
+            # TODO  code here
             pass
 
         if not for_training:
             # update reward
-            # TODO Your code here
+            # TODO  code here
             pass
 
         # prepare next step
-        # TODO Your code here
+        # TODO  code here
 
     if not for_training:
         return epi_reward

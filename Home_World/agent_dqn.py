@@ -40,7 +40,7 @@ def epsilon_greedy(state_vector, epsilon):
     Returns:
         (int, int): the indices describing the action/object to take
     """
-    # TODO Your code here
+    # TODO  code here
     action_index, object_index = None, None
     return (action_index, object_index)
 
@@ -83,7 +83,7 @@ def deep_q_learning(current_state_vector, action_index, object_index, reward,
 
     q_value_cur_state = model(current_state_vector)
 
-    # TODO Your code here
+    # TODO  code here
 
     loss = None
 
@@ -103,7 +103,7 @@ def run_episode(for_training):
     epi_reward = None
 
     # initialize for each episode
-    # TODO Your code here
+    # TODO  code here
 
     (current_room_desc, current_quest_desc, terminal) = framework.newGame()
     while not terminal:
@@ -112,20 +112,20 @@ def run_episode(for_training):
         current_state_vector = torch.FloatTensor(
             utils.extract_bow_feature_vector(current_state, dictionary))
 
-        # TODO Your code here
+        # TODO  code here
 
         if for_training:
             # update Q-function.
-            # TODO Your code here
+            # TODO  code here
             pass
 
         if not for_training:
             # update reward
-            # TODO Your code here
+            # TODO  code here
             pass
 
         # prepare next step
-        # TODO Your code here
+        # TODO  code here
 
     if not for_training:
         return epi_reward
