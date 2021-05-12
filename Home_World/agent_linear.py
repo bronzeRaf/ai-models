@@ -45,23 +45,16 @@ def epsilon_greedy(state_vector, theta, epsilon):
     Returns:
         (int, int): the indices describing the action/object to take
     """
+    coin = np.random.random_sample()
     # Select random exploration
-    if epsilon > 1 - epsilon:
-        action_index = np.random.random_integers(0, NUM_ACTIONS - 1)
-        object_index = np.random.random_integers(0, NUM_OBJECTS - 1)
+    if coin < epsilon:
+        action_index = np.random.randint(NUM_ACTIONS)
+        object_index = np.random.randint(NUM_OBJECTS)
     # Select best action
     else:
-        maxq = (theta @ state_vector)[tuple2index(0, 0)]
-        action_index = 0
-        object_index = 0
-        for i in range(0, NUM_ACTIONS):
-            for j in range(0, NUM_OBJECTS):
-                q_value = (theta @ state_vector)[tuple2index(i, j)]
-                if q_value >= maxq:
-                    maxq = q_value
-                    action_index = i
-                    object_index = j
-
+        q_values = theta @ state_vector
+        index = np.argmax(q_values)
+        action_index, object_index = index2tuple(index)
     return (action_index, object_index)
 
 # pragma: coderesponse end
@@ -84,26 +77,17 @@ def linear_q_learning(theta, current_state_vector, action_index, object_index,
     Returns:
         None
     """
-    if terminal == True:
-        maxq = 0
-    else:
-        maxq = (theta @ next_state_vector)[tuple2index(0, 0)]
-        max_action = 0
-        max_object = 0
-        for i in range(0, NUM_ACTIONS):
-            for j in range(0, NUM_OBJECTS):
-                q_value = (theta @ next_state_vector)[tuple2index(i, j)]
-                if q_value >= maxq:
-                    maxq = q_value
-                    max_action = i
-                    max_object = j
-        maxq = (theta @ current_state_vector)[tuple2index(max_action, max_object)]
+    q_values_next = theta @ next_state_vector
+    maxq_next = np.max(q_values_next)
 
-    q_value = (theta @ current_state_vector)[tuple2index(action_index, object_index)]
-    update_term = ALPHA * (reward + GAMMA * maxq - q_value)#*current_state_vector[tuple2index(action_index, object_index)]
-    theta = theta + update_term
+    q_values = theta @ current_state_vector
+    cur_index = tuple2index(action_index, object_index)
+    q_value_cur = q_values[cur_index]
 
-    return None
+    target = reward + GAMMA * maxq_next * (1 - terminal)
+
+    theta[cur_index] = theta[cur_index] + ALPHA * (target - q_value_cur) * current_state_vector
+
 # pragma: coderesponse end
 
 

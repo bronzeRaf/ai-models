@@ -11,21 +11,27 @@ In order to design an autonomous game player, we will employ a reinforcement lea
 
 - A tabular Q-learning algorithm for a simple setting where each text description is associated with a unique index.
 - A Q-learning algorithm with linear approximation architecture, using bag-of-words representation for textual state description.
-- A deep Q-network.
+- A deep Q-network using a neural network to update the Q values.
 - Usage of the Q-learning algorithms on the Home World game.
 
 
 ### Executing
-You can run the models, perform clustering, plot the clusters and print the evaluation metrics from the main.py file. Inside main.py you will find comment instructions and code for:
-- Loading data and the training/test set.
-- Clustering via Kmeans on toy data.
-- Clustering via EM on toy data.
-- Plotting and printing results, in order to evaluate the models.
-- Preprocessing the data using the above described approaches.
+You can train, evaluate the models, see the progress of the average rewards obtained, plot the learning curves and print the evaluation metrics from the specific files for each approach.
 
-You can run the functionalities using the proper snippet of the main.py script. Comment out not needed parts and uncomment needed. Then simply run:
+- You can run the functionalities of the tabular Q-learning algorithm running:
 
 ```bash
-python3 main.py
+python3 agent_tabular_ql.py
 ```
 
+- You can run the functionalities of the linear Q-learning algorithm running:
+
+```bash
+python3 agent_linear.py
+```
+
+- You can run the functionalities of the deep Q-learning algorithm running:
+
+```bash
+python3 agent_dqn.py
+```

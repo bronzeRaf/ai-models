@@ -34,16 +34,15 @@ def epsilon_greedy(state_1, state_2, q_func, epsilon):
     Returns:
         (int, int): the indices describing the action/object to take
     """
+    coin = np.random.random_sample()
     # Select random exploration
-    if epsilon > 1-epsilon:
-        action_index = np.random.random_integers(0, NUM_ACTIONS-1)
-        object_index = np.random.random_integers(0, NUM_OBJECTS-1)
+    if coin < epsilon:
+        action_index = np.random.randint(NUM_ACTIONS)
+        object_index = np.random.randint(NUM_OBJECTS)
     # Select best action
     else:
-        index = np.argmax(q_func[state_1, state_2, :, :])
-        indices = np.unravel_index(index, np.shape(q_func))
-        action_index = indices[2]
-        object_index = indices[3]
+        q_values = q_func[state_1, state_2, :, :]
+        (action_index, object_index) = np.unravel_index(np.argmax(q_values, axis=None), q_values.shape)
 
     return (action_index, object_index)
 
